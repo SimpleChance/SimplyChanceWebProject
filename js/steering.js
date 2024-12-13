@@ -1,32 +1,47 @@
 let vehicles = [];
+let numAgents = 100;
 let maxSpeed = 4;
 let maxForce = 0.1;
-let numAgents = 100;
+
+// Function to update settings from inputs
+function updateSettings() {
+    const numAgentsInput = document.getElementById("numAgents");
+    const maxSpeedInput = document.getElementById("maxSpeed");
+    const maxForceInput = document.getElementById("maxForce");
+
+    numAgents = parseInt(numAgentsInput.value);
+    maxSpeed = parseFloat(maxSpeedInput.value);
+    maxForce = parseFloat(maxForceInput.value);
+
+    // Adjust number of agents dynamically
+    if (vehicles.length > numAgents) {
+        vehicles.splice(numAgents); // Remove extra vehicles
+    } else {
+        for (let i = vehicles.length; i < numAgents; i++) {
+            vehicles.push(new Vehicle(random(width), random(height)));
+        }
+    }
+
+    // Update vehicle parameters
+    vehicles.forEach(vehicle => {
+        vehicle.maxSpeed = maxSpeed;
+        vehicle.maxForce = maxForce;
+    });
+}
 
 function setup() {
     let canvas = createCanvas(800, 600);
     canvas.parent('sketch-holder');
-    initializeVehicles(numAgents);
 
-    // Link sliders to variables
-    const numAgentsInput = document.getElementById('numAgents');
-    const maxSpeedSlider = document.getElementById('maxSpeed');
-    const maxForceSlider = document.getElementById('maxForce');
+    // Initialize vehicles
+    for (let i = 0; i < numAgents; i++) {
+        vehicles.push(new Vehicle(random(width), random(height)));
+    }
 
-    numAgentsInput.addEventListener('input', () => {
-        numAgents = parseInt(numAgentsInput.value);
-        initializeVehicles(numAgents);
-    });
-
-    maxSpeedSlider.addEventListener('input', () => {
-        maxSpeed = parseFloat(maxSpeedSlider.value);
-        document.getElementById('maxSpeedValue').textContent = maxSpeed;
-    });
-
-    maxForceSlider.addEventListener('input', () => {
-        maxForce = parseFloat(maxForceSlider.value);
-        document.getElementById('maxForceValue').textContent = maxForce;
-    });
+    // Add event listeners to inputs
+    document.getElementById("numAgents").addEventListener("change", updateSettings);
+    document.getElementById("maxSpeed").addEventListener("input", updateSettings);
+    document.getElementById("maxForce").addEventListener("input", updateSettings);
 }
 
 function draw() {
@@ -39,26 +54,22 @@ function draw() {
     }
 }
 
-function initializeVehicles(count) {
-    vehicles = [];
-    for (let i = 0; i < count; i++) {
-        vehicles.push(new Vehicle(random(width), random(height)));
-    }
-}
-
+// Vehicle class
 class Vehicle {
     constructor(x, y) {
         this.position = createVector(x, y);
         this.velocity = p5.Vector.random2D();
         this.acceleration = createVector(0, 0);
+        this.maxSpeed = maxSpeed;
+        this.maxForce = maxForce;
     }
 
     seek(target) {
         let desired = p5.Vector.sub(target, this.position);
-        desired.setMag(maxSpeed);
+        desired.setMag(this.maxSpeed);
 
         let steer = p5.Vector.sub(desired, this.velocity);
-        steer.limit(maxForce);
+        steer.limit(this.maxForce);
 
         this.applyForce(steer);
     }
@@ -69,7 +80,7 @@ class Vehicle {
 
     update() {
         this.velocity.add(this.acceleration);
-        this.velocity.limit(maxSpeed);
+        this.velocity.limit(this.maxSpeed);
         this.position.add(this.velocity);
         this.acceleration.mult(0);
     }
