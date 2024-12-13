@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steering Behaviors</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <title>Steering Behaviors Demo</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Steering Behaviors Demo</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="steering.html">Steering Behaviors</a>
-        </nav>
-    </header>
-    <main>
-        <h2>Interactive Steering Simulation</h2>
-        <div id="sketch-holder"></div>
-        <script src="https://cdn.jsdelivr.net/npm/p5@1.4.2/lib/p5.min.js"></script>
-        <script src="js/steering.js"></script>
-    </main>
-    <footer>
-        <p>&copy; 2024 Chance</p>
-    </footer>
+    <h2>Steering Behaviors Demo</h2>
+    <p>Use the sliders and input to modify the simulation.</p>
+
+    <div id="controls">
+        <label for="numAgents">Number of Agents: </label>
+        <input type="number" id="numAgents" min="1" max="500" value="100"><br><br>
+
+        <label for="maxSpeed">Max Speed: </label>
+        <input type="range" id="maxSpeed" min="1" max="10" value="4" step="0.1"><span id="maxSpeedValue">4</span><br><br>
+
+        <label for="maxForce">Max Force: </label>
+        <input type="range" id="maxForce" min="0.1" max="2" value="0.1" step="0.01"><span id="maxForceValue">0.1</span>
+    </div>
+
+    <div id="sketch-holder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.2/lib/p5.min.js"></script>
+    <script src="js/steering.js"></script>
 </body>
 </html>

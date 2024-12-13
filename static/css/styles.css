@@ -25,3 +25,21 @@ main {
     display: flex;
     justify-content: center;
 }
+
+#controls {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 300px;
+}
+
+#controls label {
+    font-weight: bold;
+}
+
+#controls input {
+    margin: 5px 0;
+    width: 100%;
+}
